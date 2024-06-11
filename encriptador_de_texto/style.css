@@ -1,0 +1,126 @@
+body {
+  background-color: rgb(218, 235, 250);
+}
+
+.flex-container {
+  display: flex;
+  text-align: center;
+}
+
+.text {
+  width: 100%;
+  height: 800px;
+  text-transform: lowercase;
+  resize: none;
+  border: none;
+}
+
+.flex-item-left {
+  width: 70%;
+}
+
+#toEncrypt {
+  box-sizing: border-box;
+  background-color: transparent;
+  color: rgb(34, 34, 183);
+  font-size: 30px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  text-align: center;
+  align-content: center;
+}
+
+.flex-item-right {
+  width: 30%;
+  background-color: white;
+  border-radius: 35px;
+  margin: 0px 20px;
+  box-sizing: border-box;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+
+#decrypted {
+  border-radius: 25px;
+  box-sizing: border-box;
+  padding: 30px 30px;
+  font-size: 20px;
+}
+
+button {
+  width: 160px;
+  height: 35px;
+  border: 3px;
+  border-style: solid;
+  padding: 10px 30px;
+  margin: 5px 20px;
+  cursor: pointer;
+  box-sizing: content-box;
+  border-radius: 15px;
+  font-weight: bold;
+  transition-duration: 0.4s;
+  background-color: #ffffff;
+  color: #0423aa;
+}
+
+button:hover {
+  background-color: #0423aa;
+  color: white;
+  border-color: #0423aa;
+}
+
+div {
+  outline: none;
+}
+
+#rules {
+  visibility: hidden;
+}
+
+#rules.invalid {
+  visibility: visible;
+  color: red;
+  font-size: 20px;
+}
+
+.copy {
+  visibility: hidden;
+  position: relative;
+  display: inline-block;
+}
+
+.copy .tooltip {
+  visibility: hidden;
+  width: 180px;
+  background-color: #555;
+  color: #fff;
+  text-align: center;
+  border-radius: 6px;
+  padding: 5px;
+  position: absolute;
+  z-index: 1;
+  bottom: 105%;
+  left: 50%;
+  margin-left: -95px;
+  opacity: 0;
+  transition: opacity 1.5s;
+}
+
+.copy .tooltip::after {
+  content: "";
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  margin-left: -5px;
+  border-width: 5px;
+  border-style: solid;
+  border-color: #555 transparent transparent transparent;
+}
+
+@media (max-width: 800px) {
+  .flex-item-right,
+  .flex-item-left {
+    flex: 100%;
+  }
+}

@@ -1,0 +1,41 @@
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="style.css" />
+    <script src="app.js"></script>
+    <title>Encriptador de texto simple</title>
+  </head>
+
+  <body>
+    <div class="logo">
+      <h1>Encriptador/desencriptador de texto simple</h1>
+    </div>
+    <div class="flex-container">
+      <div class="flex-item-left">
+        <div
+          id="toEncrypt"
+          class="text"
+          contenteditable="true"
+          ondblclick="selectText('toEncrypt')"
+        >
+          Ingresa el texto aqui
+        </div>
+        <p id="rules" class="">
+          No ingreses caracteres especiales, solo letras y espacios.
+        </p>
+        <button onclick="toEncryptOrDecrypt('keys')">Encriptar</button>
+        <button onclick="toEncryptOrDecrypt('values')">Desencriptar</button>
+      </div>
+      <div class="flex-item-right">
+        <div id="decrypted" class="text">Aun no has escrito nada</div>
+        <div id="copy" class="copy">
+          <button onclick="copiar()" onmouseout="outCopyBtn()">
+            <span class="tooltip" id="copyTooltip"></span>
+            Copiar
+          </button>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
