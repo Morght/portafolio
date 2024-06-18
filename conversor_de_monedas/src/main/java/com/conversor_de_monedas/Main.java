@@ -2,10 +2,12 @@ package com.conversor_de_monedas;
 
 import java.io.IOException;
 import java.io.StringReader;
+import java.math.BigDecimal;
 import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
+import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -50,13 +52,54 @@ public class Main {
 
         conversionRates = getConversionRates();
         String menu = makeMenu();
+        String userChoice;
+        int optionSelected = 0;
+        String userQuantity;
 
         try (Scanner input = new Scanner(System.in)) {
 
             while (true) {
 
                 System.out.println(menu);
+                userChoice = input.next();
+                System.out.println("");
 
+                try {
+                    optionSelected = Integer.parseInt(userChoice);
+
+                    if (optionSelected > 0 && optionSelected < (menuOptions.size() + 1)) {
+
+                        String[] currencyNames = menuOptions.get(optionSelected - 1).split(" --> ");
+                        System.out.println("++Ingresa la cantidad de " + currencyNames[0] + " a convertir:");
+                        userQuantity = input.next();
+
+                        try {
+                            BigDecimal quantity = new BigDecimal(userQuantity);
+
+                            // TODO convertion manager
+                            // String result = convert(optionSelected, quantity);
+                            System.out.println(
+                                    "+++++ " + NumberFormat.getCurrencyInstance().format(quantity) + " "
+                                            + currencyNames[0] + " son "
+                                            // + result + " "
+                                            + currencyNames[1] + "+++++");
+
+                        } catch (NumberFormatException e) {
+                            System.out.println("*---La cantidad no es valida---*");
+                        }
+
+                    } else if (optionSelected == menuOptions.size() + 1) {
+                        System.out.print("""
+                                **** Saliendo ****
+
+                                """);
+                        break;
+                    } else {
+                        System.out.println("*---Opcion no valida---*");
+                    }
+                } catch (NumberFormatException e) {
+                    System.out.println("*---Opcion no valida---*");
+                }
             }
         }
 
