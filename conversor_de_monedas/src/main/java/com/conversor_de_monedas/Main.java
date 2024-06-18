@@ -1,8 +1,18 @@
 package com.conversor_de_monedas;
 
 import java.io.IOException;
+import java.io.StringReader;
+import java.net.URI;
+import java.net.http.HttpClient;
+import java.net.http.HttpRequest;
+import java.net.http.HttpResponse;
 import java.util.ArrayList;
 import java.util.Scanner;
+
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
+import com.google.gson.stream.JsonReader;
 
 public class Main {
 
@@ -16,7 +26,9 @@ public class Main {
             // "COP - Peso colombiano",
             "ARS - Peso argentino"
     };
+    private static final String BASE_CODE = "USD";
     private static final ArrayList<String> menuOptions = new ArrayList<>();
+    private static JsonObject conversionRates;
 
     // Visual reference
     // private static final String MENU = """
@@ -36,6 +48,7 @@ public class Main {
 
     public static void main(String[] args) throws IOException, InterruptedException {
 
+        conversionRates = getConversionRates();
         String menu = makeMenu();
 
         try (Scanner input = new Scanner(System.in)) {
@@ -43,6 +56,7 @@ public class Main {
             while (true) {
 
                 System.out.println(menu);
+
             }
         }
 
@@ -81,4 +95,34 @@ public class Main {
         return menu;
     }
 
+    private static JsonObject getConversionRates() throws IOException, InterruptedException {
+        // URL
+        String url_str = "https://v6.exchangerate-api.com/v6/536c388e34d2fdbf10b5e647/latest/" + BASE_CODE;
+
+        HttpClient client = HttpClient.newHttpClient();
+        HttpRequest request = HttpRequest.newBuilder()
+                .uri(URI.create(url_str))
+                .build();
+        HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+
+        JsonObject jsonObjectT = null;
+
+        try (JsonReader jsonReader = new JsonReader(new StringReader(response.body()))) {
+            jsonReader.beginObject();
+            while (jsonReader.hasNext()) {
+                String fieldName = jsonReader.nextName();
+                if (!fieldName.equals("conversion_rates")) {
+                    jsonReader.skipValue();
+                } else {
+                    JsonElement jsonElementT = JsonParser.parseReader(jsonReader);
+                    jsonObjectT = jsonElementT.getAsJsonObject();
+                }
+            }
+            jsonReader.endObject();
+        } catch (Exception ex) {
+            System.out.println(ex.toString());
+        }
+
+        return jsonObjectT;
+    }
 }
