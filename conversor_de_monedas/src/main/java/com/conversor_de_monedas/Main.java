@@ -3,6 +3,7 @@ package com.conversor_de_monedas;
 import java.io.IOException;
 import java.io.StringReader;
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
@@ -21,14 +22,15 @@ public class Main {
     // To add currency codes keep the format "123 - Name1 Name2" or uncomment
     // Comment line for remove...
     private static final String[] CURRENCY_CODES = {
-            "USD - Dolar",
-            "BOB - Bolivian boliviano",
+            "USD - Dolar", // using as base
+            "MXN - Peso mexicano",
             "BRL - Real brasileño",
             // "CLP - Peso chileno",
             // "COP - Peso colombiano",
-            "ARS - Peso argentino"
+            "ARS - Peso argentino",
+            "BOB - Bolivian boliviano"
     };
-    private static final String BASE_CODE = "USD";
+    private static final String BASE_CODE = CURRENCY_CODES[0];
     private static final ArrayList<String> menuOptions = new ArrayList<>();
     private static JsonObject conversionRates;
 
@@ -75,14 +77,12 @@ public class Main {
 
                         try {
                             BigDecimal quantity = new BigDecimal(userQuantity);
-
-                            // TODO convertion manager
-                            // String result = convert(optionSelected, quantity);
+                            String result = convert(optionSelected, quantity);
                             System.out.println(
-                                    "+++++ " + NumberFormat.getCurrencyInstance().format(quantity) + " "
+                                    "\n +++++ " + NumberFormat.getCurrencyInstance().format(quantity) + " "
                                             + currencyNames[0] + " son "
-                                            // + result + " "
-                                            + currencyNames[1] + "+++++");
+                                            + result + " "
+                                            + currencyNames[1] + " +++++ \n");
 
                         } catch (NumberFormatException e) {
                             System.out.println("*---La cantidad no es valida---*");
@@ -118,12 +118,12 @@ public class Main {
                 """;
 
         String menu = header;
-        String base = CURRENCY_CODES[0].substring(6);
+        String baseName = BASE_CODE.substring(6);
 
         // Create menuOptions
         for (int i = 1; i < CURRENCY_CODES.length; i++) {
-            menuOptions.add(base + " --> " + CURRENCY_CODES[i].substring(6));
-            menuOptions.add(CURRENCY_CODES[i].substring(6) + " --> " + base);
+            menuOptions.add(baseName + " --> " + CURRENCY_CODES[i].substring(6));
+            menuOptions.add(CURRENCY_CODES[i].substring(6) + " --> " + baseName);
         }
 
         // Add menuOptions to menu
@@ -140,7 +140,8 @@ public class Main {
 
     private static JsonObject getConversionRates() throws IOException, InterruptedException {
         // URL
-        String url_str = "https://v6.exchangerate-api.com/v6/536c388e34d2fdbf10b5e647/latest/" + BASE_CODE;
+        String url_str = "https://v6.exchangerate-api.com/v6/536c388e34d2fdbf10b5e647/latest/"
+                + BASE_CODE.substring(0, 3);
 
         HttpClient client = HttpClient.newHttpClient();
         HttpRequest request = HttpRequest.newBuilder()
@@ -167,5 +168,35 @@ public class Main {
         }
 
         return jsonObjectT;
+    }
+
+    private static String convert(int optionSelected, BigDecimal quantity) {
+
+        String[] currencies = menuOptions.get(optionSelected - 1).split(" --> ");
+        String code;
+        BigDecimal result;
+
+        // convert from USD
+        if (optionSelected % 2 == 0) {
+            code = getCurrencyCode(currencies[0]);
+            result = quantity.divide(conversionRates.get(code).getAsBigDecimal(), 2, RoundingMode.DOWN);
+        } else {
+            // convert to USD
+            code = getCurrencyCode(currencies[1]);
+            result = conversionRates.get(code).getAsBigDecimal().multiply(quantity);
+        }
+        return NumberFormat.getCurrencyInstance().format(result);
+    }
+
+    private static String getCurrencyCode(String currency) {
+
+        String result = "";
+        for (String code : CURRENCY_CODES) {
+            if (code.contains(currency)) {
+                result = code.substring(0, 3);
+                break;
+            }
+        }
+        return result;
     }
 }
