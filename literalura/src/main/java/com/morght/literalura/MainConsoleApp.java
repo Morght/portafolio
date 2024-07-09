@@ -40,7 +40,7 @@ public class MainConsoleApp {
 
             System.out.println("""
                     ================================================
-                    1 - Buscar libro por titulo
+                    1 - Buscar libro por titulo y/con/o autor
                     2 - Listar libros registrados
                     3 - Listar autores registrados
                     4 - Listar autores vivos en un determinado anio
