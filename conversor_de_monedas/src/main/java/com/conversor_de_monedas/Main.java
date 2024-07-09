@@ -52,7 +52,7 @@ public class Main {
 
     public static void main(String[] args) throws IOException, InterruptedException {
 
-        conversionRates = getConversionRates(BASE_CODE);
+        conversionRates = getConversionRates(BASE_CODE.substring(0, 3));
         String menu = makeMenu();
         String userChoice;
         int optionSelected = 0;
@@ -141,7 +141,7 @@ public class Main {
     private static JsonObject getConversionRates(String baseCode) throws IOException, InterruptedException {
         // URL
         String url_str = "https://v6.exchangerate-api.com/v6/536c388e34d2fdbf10b5e647/latest/"
-                + baseCode.substring(0, 3);
+                + baseCode;
 
         HttpClient client = HttpClient.newHttpClient();
         HttpRequest request = HttpRequest.newBuilder()
