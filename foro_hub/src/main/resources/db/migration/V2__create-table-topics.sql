@@ -1,0 +1,11 @@
+-- CREATE TABLE topics (
+--     id bigint not null auto_increment,
+--     creation_date datetime(6),
+--     message varchar(255),
+--     state enum ('CLOSE','OPEN','VALIDATION'),
+--     title varchar(255),
+--     owner_id bigint,
+
+--     primary key (id),
+--     FOREIGN KEY (author_id) REFERENCES answer(id)
+-- );

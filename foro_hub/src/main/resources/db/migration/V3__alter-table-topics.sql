@@ -1,0 +1,1 @@
+-- alter table topics add foreign key (owner_id) references users (id)
