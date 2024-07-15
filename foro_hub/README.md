@@ -1,15 +1,30 @@
 # ForoHub
 
-API REST que utiliza Java Spring Boot\
-\
-La API se centra específicamente en:\
-\
-1 - Crear usuario\
-2 - Autenticar usuario\
-3 - Crear un nuevo tema\
-4 - Mostrar todos los tópicos creados\
-5 - Mostrar un tópico específico\
-6 - Actualizar un tópico\
-7 - Eliminar un tópico
+API REST que utiliza:
 
-Solo usuarios autenticados pueden usar del punto 3 al 7
+<ul>
+  <li>Java</li>
+  <li>Springboot</li>
+  <li>Lombok</li>
+  <li>Flyway</li>
+  <li>MySQL</li>
+  <li>JPA</li>
+  <li>Spring Security</li>
+  <li>JWT</li>
+</ul>
+
+La API se centra específicamente en:
+
+<ol>
+    <li>Crear usuario</li>
+    <li>Autenticar usuario</li>
+    <li>Crear un nuevo tema</li>
+    <li>Mostrar todos los temas creados</li>
+    <li>Mostrar un tema específico</li>
+    <li>Actualizar un tema</li>
+    <li>Eliminar un tema</li>
+</ol>
+
+---
+
+> Solo usuarios autenticados pueden usar del punto 3 al 7
